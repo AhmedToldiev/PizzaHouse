@@ -4,11 +4,16 @@ import Header from './components/Header';
 import Categories from './components/Categories';
 import Sort from './components/Sort';
 import PizzaBlock from './components/PizzaBlock';
+import { Skeleton } from './components/PizzaBlock/Skeleton';
+
+
 
 // import pizzas from './pizzas.json';
 
 function App() {
   const [items, setItems] = useState([]);
+const [isLoading,setIsLoading] = useState(true)
+
 
   useEffect(()=>{
     fetch('https://65cb1d59efec34d9ed86c07b.mockapi.io/items')
