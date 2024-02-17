@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './scss/app.scss';
 import Header from './components/Header';
 import Home from './pages/Home';
@@ -7,12 +7,14 @@ import NotFound from './pages/NotFound';
 import Card from './pages/Card';
 
 function App() {
+  const [search, setSearch] = useState('');
+  // console.log(search, '----')
   return (
     <div className="wrapper">
-      <Header />
+      <Header search={search} setSearch={setSearch} />
       <div className="content">
         <Routes>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<Home search={search}  />} />
           <Route path="/card" element={<Card />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
