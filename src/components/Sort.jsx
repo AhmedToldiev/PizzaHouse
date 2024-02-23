@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import {setSort} from '../redux/slices/filterSlice'
+import { setSort } from '../redux/slices/filterSlice';
 
 export const menuList = [
   { name: 'популярности(DESC)', sortProperty: 'rating' },
@@ -12,17 +12,29 @@ export const menuList = [
 ];
 export default function Sort() {
   const [open, setOpen] = useState(false);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const sort = useSelector((state) => state.filter.sort);
-
-
-
+  const sortRef = useRef();
   const onCLickListItem = (obj) => {
-dispatch(setSort(obj))
+    dispatch(setSort(obj));
     setOpen(false);
   };
+
+  useEffect(() => {
+    console.log('mount');
+    const handleClickOutside = (event) => {
+      if (!event.composedPath().includes(sortRef.current)) {
+        setOpen(false);
+        console.log('click oitside');
+      }
+    };
+    document.body.addEventListener('click', handleClickOutside);
+    
+    return () => document.body.removeEventListener('click', handleClickOutside);
+  }, []);
+
   return (
-    <div className="sort">
+    <div ref={sortRef} className="sort">
       <div className="sort__label">
         <svg
           width="10"
