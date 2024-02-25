@@ -8,7 +8,7 @@ import { Skeleton } from '../components/PizzaBlock/Skeleton';
 import Pagination from '../components/Pagination';
 import { setCategoryId, setCurrentPage, setFilters } from '../redux/slices/filterSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import axios from 'axios';
+import { fetchPizzas } from '../redux/slices/pizzasSlice';
 
 export default function Home({ search }) {
   const navigate = useNavigate();
@@ -19,8 +19,9 @@ export default function Home({ search }) {
   const categoryId = useSelector((state) => state.filter.categoryId);
   const sortType = useSelector((state) => state.filter.sort.sortProperty);
   const currentPage = useSelector((state) => state.filter.currentPage);
+  const items = useSelector((state) => state.pizza.items);
 
-  const [items, setItems] = useState([]);
+  // const [items, setItems] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const onChangeCategory = useCallback(
@@ -34,28 +35,27 @@ export default function Home({ search }) {
     dispatch(setCurrentPage(number));
   };
 
-  const fetchPizzas = () => {
+  const getPizzas = async () => {
     setIsLoading(true);
     const sortby = sortType.replace('-,', '');
     const order = sortType.includes('-') ? 'asc' : 'desc';
     const category = categoryId > 0 ? `category=${categoryId}` : '';
-    // fetch(
-    //   `https://65cb1d59efec34d9ed86c07b.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortby}&order=${order}`,
-    // )
-    //   .then((res) => res.json())
-    //   .then((arr) => setItems(arr), setIsLoading(false))
-    //   .catch(() => setIsLoading(false));
-    axios
-      .get(
-        `https://65cb1d59efec34d9ed86c07b.mockapi.io/items?page=${currentPage}&limit=4&${category}&sortBy=${sortby}&order=${order}`,
-      )
-      .then((res) => {
-        setItems(res.data);
-        setIsLoading(false);
-      })
-      .catch(() => setIsLoading(false));
+
+    try {
+      dispatch(
+        fetchPizzas({
+          sortby,
+          order,
+          category,
+          currentPage,
+        }),
+      );
+      setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      console.log(error);
+    }
   };
-  
 
   // Если изменили параметры и был первый рендер
   useEffect(() => {
@@ -70,7 +70,6 @@ export default function Home({ search }) {
     }
     isMounted.current = true;
   }, [categoryId, sortType, currentPage, navigate, isMounted]);
-
 
   // Если был первый рендер, то проверяем URL-параметры и сохраняем в redux
   useEffect(() => {
@@ -87,12 +86,11 @@ export default function Home({ search }) {
     }
   }, []);
 
-
   // Если был первый рендер, то запрашиваем пиццы
   useEffect(() => {
     window.scrollTo(0, 0);
     if (!isSearch.current) {
-      fetchPizzas();
+      getPizzas();
     }
     isSearch.current = false;
   }, [categoryId, sortType, currentPage]);
