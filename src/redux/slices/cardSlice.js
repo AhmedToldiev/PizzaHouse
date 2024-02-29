@@ -36,6 +36,9 @@ const cardSlice = createSlice({
   },
 });
 
+export const selectCard = (state) => state.card;
+
+
 export const { addItem, removeItem, clearItems, minusItem } = cardSlice.actions;
 
 export default cardSlice.reducer;

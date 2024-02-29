@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import qs from 'qs';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Categories from '../components/Categories';
 import Sort, { menuList } from '../components/Sort';
 import PizzaBlock from '../components/PizzaBlock';
@@ -10,7 +10,7 @@ import { setCategoryId, setCurrentPage, setFilters } from '../redux/slices/filte
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPizzas } from '../redux/slices/pizzasSlice';
 
-export default function Home({ search }) {
+export default function Home() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isSearch = useRef(false);
@@ -19,42 +19,31 @@ export default function Home({ search }) {
   const categoryId = useSelector((state) => state.filter.categoryId);
   const sortType = useSelector((state) => state.filter.sort.sortProperty);
   const currentPage = useSelector((state) => state.filter.currentPage);
-  const items = useSelector((state) => state.pizza.items);
+  const searchValue = useSelector((state) => state.filter.searchValue);
+  const { items, status } = useSelector((state) => state.pizza);
 
-  // const [items, setItems] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  const onChangeCategory = useCallback(
-    (id) => {
-      dispatch(setCategoryId(id));
-    },
-    [dispatch],
-  );
+  const onChangeCategory = useCallback((id) => {
+    dispatch(setCategoryId(id));
+  }, []);
 
   const onChangePage = (number) => {
     dispatch(setCurrentPage(number));
   };
 
   const getPizzas = async () => {
-    setIsLoading(true);
-    const sortby = sortType.replace('-,', '');
+    const sortBy = sortType.replace('-,', '');
     const order = sortType.includes('-') ? 'asc' : 'desc';
     const category = categoryId > 0 ? `category=${categoryId}` : '';
 
-    try {
-      dispatch(
-        fetchPizzas({
-          sortby,
-          order,
-          category,
-          currentPage,
-        }),
-      );
-      setIsLoading(false);
-    } catch (error) {
-      setIsLoading(false);
-      console.log(error);
-    }
+    dispatch(
+      fetchPizzas({
+        sortBy,
+        order,
+        category,
+        currentPage,
+      }),
+    );
+    window.scrollTo(0, 0);
   };
 
   // Если изменили параметры и был первый рендер
@@ -97,12 +86,16 @@ export default function Home({ search }) {
 
   const pizzas = items
     .filter((obj) => {
-      if (obj.title.toLowerCase().includes(search.toLowerCase())) {
+      if (obj.title.toLowerCase().includes(searchValue.toLowerCase())) {
         return true;
       }
       return false;
     })
-    .map((obj) => <PizzaBlock key={obj.id} {...obj} />);
+    .map((obj) => (
+      <Link key={obj.id} to={`/pizza/${obj.id}`}>
+        <PizzaBlock {...obj} />
+      </Link>
+    ));
   const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
 
   return (
@@ -112,7 +105,15 @@ export default function Home({ search }) {
         <Sort />
       </div>
       <h2 className="content__title">Все пиццы</h2>
-      <div className="content__items">{isLoading ? skeletons : pizzas}</div>
+      {status === 'error' ? (
+        <div className="content__error-info">
+          <h2>Произошла ошибка 😕</h2>
+          <p>К сожалению, не удалось получить пиццы. Попробуйте повторить попытку позже.</p>
+        </div>
+      ) : (
+        <div className="content__items">{status === 'loading' ? skeletons : pizzas}</div>
+      )}
+
       <Pagination currentPage={currentPage} onChangePage={onChangePage} />
     </div>
   );
