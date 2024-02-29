@@ -23,6 +23,18 @@ body {
 
 .content {
   padding: 40px 0;
+  &__error-info {
+    margin: 60px auto;
+    width: 580px;
+    
+    h2 {
+      font-size: 28px;
+      font-weight: 700;
+    }
+    p {
+      font-size: 20px;
+    }
+  }
 
   &__title {
     font-weight: 800;
