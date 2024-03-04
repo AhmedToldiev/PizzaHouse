@@ -6,12 +6,12 @@ import Home from './pages/Home';
 import {Route, Routes } from 'react-router-dom';
 import NotFound from './pages/NotFound';
 import Card from './pages/Card';
-import FullPizza from './pages/FullPizza';
+
 import Layout from './Layout';
+import { FullPizza } from './pages/FullPizza';
 
 
-
-function App() {
+export default function App() {
   return (
     <Routes>
       <Route path="/" element={<Layout />}>
@@ -23,5 +23,3 @@ function App() {
     </Routes>
   );
 }
-
-export default App;
