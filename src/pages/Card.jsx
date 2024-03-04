@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import CardItem from '../components/CardItem';
 import { clearItems } from '../redux/slices/cardSlice';
-import CardEmpty from '../components/CardEmpty';
+import { CardEmpty } from '../components/CardEmpty';
+
 
 
 export default function Card() {

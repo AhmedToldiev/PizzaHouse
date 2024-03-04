@@ -1,8 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { setSort } from '../redux/slices/filterSlice';
+import { selectSort, setSort } from '../redux/slices/filterSlice';
 
-export const menuList = [
+type MenuItemList = {
+  name: string;
+  sortProperty: string;
+};
+
+export const menuList: MenuItemList[] = [
   { name: 'популярности(DESC)', sortProperty: 'rating' },
   { name: 'популярности (ASC)', sortProperty: '-rating' },
   { name: 'цене (DESC)', sortProperty: 'price' },
@@ -13,9 +18,10 @@ export const menuList = [
 export default function Sort() {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
-  const sort = useSelector((state) => state.filter.sort);
-  const sortRef = useRef();
-  const onCLickListItem = (obj) => {
+  const sort = useSelector(selectSort);
+  const sortRef = useRef(null);
+
+  const onCLickListItem = (obj:MenuItemList) => {
     dispatch(setSort(obj));
     setOpen(false);
   };
@@ -29,7 +35,7 @@ export default function Sort() {
       }
     };
     document.body.addEventListener('click', handleClickOutside);
-    
+
     return () => document.body.removeEventListener('click', handleClickOutside);
   }, []);
 
