@@ -2,7 +2,25 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import { addItem, minusItem, removeItem } from '../redux/slices/cardSlice';
 
-export default function CardItem({ id, title, size, type, price, count, imageUrl }) {
+type CardItemProps = {
+  id: string;
+  title: string;
+  size: number;
+  type: string;
+  price: number;
+  count: number;
+  imageUrl: string;
+};
+
+export const CardItem: React.FC<CardItemProps> = ({
+  id,
+  title,
+  size,
+  type,
+  price,
+  count,
+  imageUrl,
+}) => {
   const dispatch = useDispatch();
 
   const onClickPlus = () => {
@@ -92,4 +110,4 @@ export default function CardItem({ id, title, size, type, price, count, imageUrl
       </div>
     </div>
   );
-}
+};

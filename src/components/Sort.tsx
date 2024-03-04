@@ -27,11 +27,10 @@ export default function Sort() {
   };
 
   useEffect(() => {
-    console.log('mount');
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event:any) => {
       if (!event.composedPath().includes(sortRef.current)) {
         setOpen(false);
-        console.log('click oitside');
+
       }
     };
     document.body.addEventListener('click', handleClickOutside);
@@ -63,7 +62,7 @@ export default function Sort() {
               <li
                 key={i}
                 onClick={() => onCLickListItem(obj)}
-                className={sort.sort === obj.sort ? 'active' : ''}>
+                className={sort.sort === obj.sortProperty ? 'active' : ''}>
                 {obj.name}
               </li>
             ))}
