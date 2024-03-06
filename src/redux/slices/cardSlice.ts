@@ -1,5 +1,20 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+type CartItem = {
+  id:string,
+  title:string,
+  price:number,
+  imageUrl:string,
+  type: number,
+  size: number,
+}
+
+
+interface CartSliceState {
+  totalPrice: number;
+  items: CartItem[];
+}
+
 const initialState = {
   totalPrice: 0,
   items: [],
@@ -37,7 +52,6 @@ const cardSlice = createSlice({
 });
 
 export const selectCard = (state) => state.card;
-
 
 export const { addItem, removeItem, clearItems, minusItem } = cardSlice.actions;
 

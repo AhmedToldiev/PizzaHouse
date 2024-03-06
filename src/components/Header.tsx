@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import Search from './Search/Search';
+import {Search} from './Search/Search';
 import { useSelector } from 'react-redux';
 import { selectCard } from '../redux/slices/cardSlice';
 

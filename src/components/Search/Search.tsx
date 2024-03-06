@@ -24,7 +24,7 @@ export const Search: React.FC = () => {
     }, 250),
     [],
   );
-  const onChangeInput = (e: any) => {
+  const onChangeInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
     updateSearchValue(e.target.value);
   };

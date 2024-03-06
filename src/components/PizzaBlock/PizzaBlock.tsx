@@ -11,7 +11,7 @@ type PizzaBlockProps = {
   price: number;
   imageUrl: string;
   sizes: number[];
-  types: string[];
+  types: number[];
 };
 
 export const PizzaBlock: React.FC<PizzaBlockProps> = ({
@@ -23,7 +23,7 @@ export const PizzaBlock: React.FC<PizzaBlockProps> = ({
   types,
 }) => {
   const dispatch = useDispatch();
-  const cartItem = useSelector(selectCardItemById);
+  const cartItem = useSelector(selectCardItemById(id));
 
   const [activeType, setActiveType] = useState(0);
   const [activeSize, setActiveSize] = useState(0);
