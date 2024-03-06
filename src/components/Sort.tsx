@@ -21,16 +21,15 @@ export default function Sort() {
   const sort = useSelector(selectSort);
   const sortRef = useRef(null);
 
-  const onCLickListItem = (obj:MenuItemList) => {
+  const onCLickListItem = (obj: MenuItemList) => {
     dispatch(setSort(obj));
     setOpen(false);
   };
 
   useEffect(() => {
-    const handleClickOutside = (event:any) => {
-      if (!event.composedPath().includes(sortRef.current)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (sortRef.current && !event.composedPath().includes(sortRef.current)) {
         setOpen(false);
-
       }
     };
     document.body.addEventListener('click', handleClickOutside);

@@ -2,12 +2,12 @@ import React from 'react';
 
 import './scss/app.scss';
 
-import Home from './pages/Home';
+import {Home} from './pages/Home';
 import {Route, Routes } from 'react-router-dom';
-import NotFound from './pages/NotFound';
-import Card from './pages/Card';
+import {NotFound} from './pages/NotFound';
+import {Card} from './pages/Card';
 
-import Layout from './Layout';
+import {Layout} from './Layout';
 import { FullPizza } from './pages/FullPizza';
 
 

@@ -39,7 +39,7 @@ const pizzaSlice = createSlice({
   },
 });
 
-export const selectCardItemById = (id) => (state) => state.cart.items.find((obj) => obj.id === id);
+export const selectCardItemById = (id) => (state) => state.card.items.find((obj) => obj.id === id);
 export const { setItems } = pizzaSlice.actions;
 
 export default pizzaSlice.reducer;
