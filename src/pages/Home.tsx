@@ -1,33 +1,34 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import qs from 'qs';
 import { Link, useNavigate } from 'react-router-dom';
-import Categories from '../components/Categories';
-import  Sort, { menuList } from '../components/Sort';
-import PizzaBlock from '../components/PizzaBlock/PizzaBlock';
+import { Categories } from '../components/Categories';
+import Sort, { menuList } from '../components/Sort';
+import { PizzaBlock } from '../components/PizzaBlock/PizzaBlock';
 import { Skeleton } from '../components/PizzaBlock/Skeleton';
-import Pagination from '../components/Pagination/Pagination';
+import { Pagination } from '../components/Pagination/Pagination';
 import { setCategoryId, setCurrentPage, setFilters } from '../redux/slices/filterSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchPizzas } from '../redux/slices/pizzasSlice';
+import { RootState } from '../redux/store';
 
-export default function Home() {
+export const Home: React.FC = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const isSearch = useRef(false);
   const isMounted = useRef(false);
 
-  const categoryId = useSelector((state) => state.filter.categoryId);
-  const sortType = useSelector((state) => state.filter.sort.sortProperty);
-  const currentPage = useSelector((state) => state.filter.currentPage);
-  const searchValue = useSelector((state) => state.filter.searchValue);
-  const { items, status } = useSelector((state) => state.pizza);
+  const categoryId = useSelector((state: RootState) => state.filter.categoryId);
+  const sortType = useSelector((state: RootState) => state.filter.sort.sortProperty);
+  const currentPage = useSelector((state: RootState) => state.filter.currentPage);
+  const searchValue = useSelector((state: RootState) => state.filter.searchValue);
+  const { items, status } = useSelector((state: RootState) => state.pizza);
 
-  const onChangeCategory = useCallback((id) => {
+  const onChangeCategory = useCallback((id: number) => {
     dispatch(setCategoryId(id));
   }, []);
 
-  const onChangePage = (number) => {
-    dispatch(setCurrentPage(number));
+  const onChangePage = (page: number) => {
+    dispatch(setCurrentPage(page));
   };
 
   const getPizzas = async () => {
@@ -36,6 +37,7 @@ export default function Home() {
     const category = categoryId > 0 ? `category=${categoryId}` : '';
 
     dispatch(
+      //@ts-ignore
       fetchPizzas({
         sortBy,
         order,
@@ -85,13 +87,13 @@ export default function Home() {
   }, [categoryId, sortType, currentPage]);
 
   const pizzas = items
-    .filter((obj) => {
+    .filter((obj: any) => {
       if (obj.title.toLowerCase().includes(searchValue.toLowerCase())) {
         return true;
       }
       return false;
     })
-    .map((obj) => (
+    .map((obj: any) => (
       <Link key={obj.id} to={`/pizza/${obj.id}`}>
         <PizzaBlock {...obj} />
       </Link>
@@ -117,4 +119,4 @@ export default function Home() {
       <Pagination currentPage={currentPage} onChangePage={onChangePage} />
     </div>
   );
-}
+};
