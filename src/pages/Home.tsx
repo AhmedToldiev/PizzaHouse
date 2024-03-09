@@ -7,13 +7,13 @@ import { PizzaBlock } from '../components/PizzaBlock/PizzaBlock';
 import { Skeleton } from '../components/PizzaBlock/Skeleton';
 import { Pagination } from '../components/Pagination/Pagination';
 import { setCategoryId, setCurrentPage, setFilters } from '../redux/slices/filterSlice';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchPizzas } from '../redux/slices/pizzasSlice';
-import { RootState } from '../redux/store';
+import { useSelector } from 'react-redux';
+import { SearchPizzaParams, fetchPizzas } from '../redux/slices/pizzasSlice';
+import { RootState, useAppDispatch } from '../redux/store';
 
 export const Home: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const isSearch = useRef(false);
   const isMounted = useRef(false);
 
@@ -35,6 +35,7 @@ export const Home: React.FC = () => {
     const sortBy = sortType.replace('-,', '');
     const order = sortType.includes('-') ? 'asc' : 'desc';
     const category = categoryId > 0 ? `category=${categoryId}` : '';
+    const search = searchValue;
 
     dispatch(
       //@ts-ignore
@@ -42,7 +43,8 @@ export const Home: React.FC = () => {
         sortBy,
         order,
         category,
-        currentPage,
+        search,
+        currentPage: String(currentPage),
       }),
     );
     window.scrollTo(0, 0);
@@ -65,12 +67,14 @@ export const Home: React.FC = () => {
   // Если был первый рендер, то проверяем URL-параметры и сохраняем в redux
   useEffect(() => {
     if (window.location.search) {
-      const params = qs.parse(window.location.search.substring(1));
-      const sort = menuList.find((obj) => obj.sortProperty === params.sortProperty);
+      const params = qs.parse(window.location.search.substring(1)) as unknown as SearchPizzaParams;
+      const sort = menuList.find((obj) => obj.sortProperty === params.sortBy);
       dispatch(
         setFilters({
-          ...params,
-          sort,
+          searchValue: params.search,
+          categoryId: Number(params.category),
+          currentPage: Number(params.currentPage),
+          sort: sort || menuList[0],
         }),
       );
       isSearch.current = true;
@@ -94,9 +98,9 @@ export const Home: React.FC = () => {
       return false;
     })
     .map((obj: any) => (
-      <Link key={obj.id} to={`/pizza/${obj.id}`}>
+      // <Link key={obj.id} to={`/pizza/${obj.id}`}>
         <PizzaBlock {...obj} />
-      </Link>
+      // </Link>
     ));
   const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
 

@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { clearItems, selectCard } from '../redux/slices/cardSlice';
 import { CardEmpty } from '../components/CardEmpty';
-import { CardItem } from '../components/CardItem';
+import { CardItemBlock } from '../components/CardItem';
 
 export const Card: React.FC = () => {
   const dispatch = useDispatch();
@@ -88,7 +88,7 @@ export const Card: React.FC = () => {
         </div>
         <div className="content__items">
           {items.map((item: any) => (
-            <CardItem key={item.id} {...item} />
+            <CardItemBlock key={item.id} {...item} />
           ))}
         </div>
         <div className="cart__bottom">
