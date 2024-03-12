@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {Search} from './Search/Search';
 import { useSelector } from 'react-redux';
@@ -9,6 +9,12 @@ export default function Header() {
   const location = useLocation();
 
   const totalCount = items.reduce((sum:number, item:any) => sum + item.count, 0);
+  
+  useEffect(()=>{
+const json = JSON.stringify(items)
+console.log(json);
+
+  },[items])
   return (
     <div className="header">
       <div className="container">

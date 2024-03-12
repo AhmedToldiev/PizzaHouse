@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useRef } from 'react';
 import qs from 'qs';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { Categories } from '../components/Categories';
-import Sort, { menuList } from '../components/Sort';
+import { Sort, menuList } from '../components/Sort';
 import { PizzaBlock } from '../components/PizzaBlock/PizzaBlock';
 import { Skeleton } from '../components/PizzaBlock/Skeleton';
 import { Pagination } from '../components/Pagination/Pagination';
@@ -38,7 +38,6 @@ export const Home: React.FC = () => {
     const search = searchValue;
 
     dispatch(
-      //@ts-ignore
       fetchPizzas({
         sortBy,
         order,
@@ -99,7 +98,7 @@ export const Home: React.FC = () => {
     })
     .map((obj: any) => (
       // <Link key={obj.id} to={`/pizza/${obj.id}`}>
-        <PizzaBlock {...obj} />
+      <PizzaBlock key={obj.id} {...obj} />
       // </Link>
     ));
   const skeletons = [...new Array(6)].map((_, index) => <Skeleton key={index} />);
