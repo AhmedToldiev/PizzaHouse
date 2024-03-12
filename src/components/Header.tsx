@@ -1,20 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import {Search} from './Search/Search';
+import { Search } from './Search/Search';
 import { useSelector } from 'react-redux';
 import { selectCard } from '../redux/slices/cardSlice';
 
 export default function Header() {
   const { items, totalPrice } = useSelector(selectCard);
   const location = useLocation();
+  const totalCount = items.reduce((sum: number, item: any) => sum + item.count, 0);
 
-  const totalCount = items.reduce((sum:number, item:any) => sum + item.count, 0);
-  
-  useEffect(()=>{
-const json = JSON.stringify(items)
-console.log(json);
+  const isMounted = useRef(false);
+  useEffect(() => {
+    if (isMounted.current) {
+      const json = JSON.stringify(items);
+      localStorage.setItem('card', json);
+    }
+    isMounted.current = true;
+  }, [items]);
 
-  },[items])
   return (
     <div className="header">
       <div className="container">

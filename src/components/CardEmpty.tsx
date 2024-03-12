@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import cardEmptyImg from '../empty-cart.png';
+import cardEmptyImg from '../assets/empty-cart.png';
 
 export const CardEmpty: React.FC = () => {
   return (
