@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { CartItem, addItem } from '../../redux/slices/cardSlice';
-import { selectCardItemById } from '../../redux/slices/pizzasSlice';
+
 import { Link } from 'react-router-dom';
+import { CartItem } from '../../redux/slices/card/types';
+import { addItem } from '../../redux/slices/card/slice';
+import { selectCardItemById } from '../../redux/slices/pizza/selector';
 
 const typeNames = ['тонкое', 'традиционное'];
 
