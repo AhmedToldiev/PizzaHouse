@@ -2,7 +2,10 @@ import React, { useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Search } from './Search/Search';
 import { useSelector } from 'react-redux';
-import { selectCard } from '../redux/slices/cardSlice';
+import { selectCard } from '../redux/slices/card/selector';
+
+
+import logo from '../assets/pizza-logo.svg'
 
 export default function Header() {
   const { items, totalPrice } = useSelector(selectCard);
@@ -23,7 +26,7 @@ export default function Header() {
       <div className="container">
         <Link to="/">
           <div className="header__logo">
-            <img width="38" src="img/pizza-logo.svg" alt="Pizza logo" />
+            <img width="38" src={logo} alt="Pizza logo" />
             <div>
               <h1>Pizza House</h1>
               <p>самая вкусная пицца во вселенной</p>

@@ -1,5 +1,5 @@
 
-import { CartItem } from '../redux/slices/cardSlice';
+import { CartItem } from '../redux/slices/card/types';
 import { calcTotalPrice } from './calcTotalPrice';
 
 export const getCardFromLocalStorage = () => {

@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
-export const FullPizza: React.FC = () => {
+ const FullPizza: React.FC = () => {
   const [pizza, setPizza] = useState<{
     imageUrl: string;
     title: string;
@@ -29,10 +29,11 @@ export const FullPizza: React.FC = () => {
   }
   return (
     <div className="container">
-      <img src={pizza.imageUrl} alt="" />
-      <h2>{pizza.title}</h2>
-      <h4>{pizza.price}</h4>
+      <img className="pizza-block__image" src={pizza.imageUrl} alt="" />
+      <h2 className="pizza-block__title">{pizza.title}</h2>
+      <h4 className="pizza-block__price">от {pizza.price} ₽</h4>
       <Link to="/">
+          <br />
         <button className="button button--outline button--add">
           <span>Назад</span>
         </button>
@@ -40,3 +41,5 @@ export const FullPizza: React.FC = () => {
     </div>
   );
 };
+
+export default FullPizza

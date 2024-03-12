@@ -2,11 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { clearItems, selectCard } from '../redux/slices/cardSlice';
+import { clearItems } from '../redux/slices/card/slice';
 import { CardEmpty } from '../components/CardEmpty';
 import { CardItemBlock } from '../components/CardItem';
+import { selectCard } from '../redux/slices/card/selector';
 
-export const Card: React.FC = () => {
+const Card: React.FC = () => {
   const dispatch = useDispatch();
   const { totalPrice, items } = useSelector(selectCard);
   const totalCount = items.reduce((sum: number, item: any) => sum + item.count, 0);
@@ -18,6 +19,14 @@ export const Card: React.FC = () => {
   if (!totalPrice) {
     return <CardEmpty />;
   }
+
+  const recalculateTotalPrice = () => {
+  
+    const newTotalPrice = items.reduce((total: number, item: any) => {
+      return total + item.price * item.count;
+    }, 0);
+    return newTotalPrice;
+  };
   return (
     <div className="container container--cart">
       <div className="cart">
@@ -99,7 +108,7 @@ export const Card: React.FC = () => {
             </span>
             <span>
               {' '}
-              Сумма заказа: <b>{totalPrice} ₽</b>{' '}
+              Сумма заказа: <b>{recalculateTotalPrice()} ₽</b>{' '}
             </span>
           </div>
           <div className="cart__bottom-buttons">
@@ -129,3 +138,4 @@ export const Card: React.FC = () => {
     </div>
   );
 };
+export default Card;
